@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>乐鱼体育 · 信息专栏</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f8fafc;
+            font-family: 'Georgia', 'Noto Serif SC', serif;
+            line-height: 1.7;
+            color: #2c3e50;
+        }
+
+        /* 深色头图 — 杂志封面感 */
+        .hero {
+            background: linear-gradient(145deg, #0b1a2e 0%, #1a2f44 100%);
+            height: 68vh;
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 4px solid #c8a96e;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: repeating-linear-gradient(90deg, #c8a96e 0px, #c8a96e 12px, transparent 12px, transparent 24px);
+        }
+
+        .hero h1 {
+            font-size: 3.7rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: #f1e9da;
+            text-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+            margin-bottom: 0.5rem;
+            word-break: keep-all;
+        }
+
+        .hero .sub {
+            font-size: 1.2rem;
+            color: #d4c5a6;
+            border-top: 1px solid rgba(200, 169, 110, 0.35);
+            padding-top: 1rem;
+            max-width: 700px;
+            font-style: italic;
+            letter-spacing: 2px;
+        }
+
+        .hero .sub span {
+            background: rgba(200, 169, 110, 0.18);
+            padding: 0 12px;
+        }
+
+        /* 正文区：浅色背景，宽栏 */
+        .content-wrap {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 2rem 4rem;
+        }
+
+        /* 杂志三段式自然介绍 — 每一段不同节奏 */
+        .magazine-section {
+            display: flex;
+            flex-direction: column;
+            gap: 2.8rem;
+        }
+
+        .block {
+            background: #ffffff;
+            padding: 2.2rem 2.5rem;
+            border-radius: 32px 12px 32px 12px;
+            box-shadow: 0 8px 24px -12px rgba(0, 20, 30, 0.12);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .block:hover {
+            box-shadow: 0 14px 32px -18px #0b1a2e;
+        }
+
+        .block h2 {
+            font-size: 1.8rem;
+            font-weight: 500;
+            color: #1a2f44;
+            border-left: 6px solid #c8a96e;
+            padding-left: 1.2rem;
+            margin-bottom: 1.6rem;
+            letter-spacing: 1px;
+        }
+
+        .block p {
+            margin-bottom: 1.2rem;
+            font-size: 1.08rem;
+            text-align: justify;
+        }
+
+        .block p:last-child {
+            margin-bottom: 0;
+        }
+
+        .block .pull-quote {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #5d6f7e;
+            padding: 0.8rem 0 0.8rem 2rem;
+            border-left: 3px solid #c8a96e;
+            margin: 1.4rem 0;
+            background: #f4f6f9;
+            border-radius: 0 16px 16px 0;
+        }
+
+        /* 强调色链接 + 自然嵌入 */
+        a {
+            color: #b8863c;
+            text-decoration: none;
+            border-bottom: 1px dotted #c8a96e;
+            transition: color 0.2s, border-bottom 0.2s;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: #865f2a;
+            border-bottom: 2px solid #865f2a;
+        }
+
+        /* FAQ 摘要 — 轻量卡片 */
+        .faq-digest {
+            margin-top: 2.8rem;
+            background: #f1efea;
+            padding: 1.8rem 2.2rem;
+            border-radius: 40px 8px 40px 8px;
+            border: 1px solid #e0d8cd;
+        }
+
+        .faq-digest h3 {
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: #1a2f44;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .faq-digest h3::before {
+            content: '▍';
+            color: #c8a96e;
+            font-size: 1.8rem;
+        }
+
+        .faq-item {
+            padding: 0.8rem 0;
+            border-bottom: 1px dashed #d6cfc3;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-q {
+            flex: 0 0 130px;
+            font-weight: 600;
+            color: #3b4e5e;
+        }
+
+        .faq-a {
+            flex: 1;
+            color: #3e4f5c;
+            min-width: 200px;
+        }
+
+        /* 页尾提示 — 杂志感脚注 */
+        .page-footer {
+            margin-top: 4rem;
+            padding: 2.2rem 0 1.8rem;
+            border-top: 1px solid #d4cbc0;
+            text-align: center;
+            font-size: 0.95rem;
+            color: #6a7a88;
+            letter-spacing: 1px;
+        }
+
+        .page-footer .sig {
+            display: inline-block;
+            background: #eae5dc;
+            padding: 0.4rem 1.6rem;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            margin-top: 0.6rem;
+            color: #2c3e50;
+        }
+
+        /* 响应式细节 */
+        @media (max-width: 780px) {
+            .hero h1 {
+                font-size: 2.6rem;
+                letter-spacing: 1px;
+            }
+
+            .hero .sub {
+                font-size: 1rem;
+            }
+
+            .content-wrap {
+                padding: 2rem 1.2rem;
+            }
+
+            .block {
+                padding: 1.8rem 1.5rem;
+            }
+
+            .block h2 {
+                font-size: 1.5rem;
+                padding-left: 0.8rem;
+            }
+
+            .faq-q {
+                flex: 0 0 90px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero {
+                min-height: 300px;
+                height: 56vh;
+            }
+
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+
+            .block {
+                border-radius: 24px 8px 24px 8px;
+                padding: 1.5rem 1rem;
+            }
+
+            .block p {
+                font-size: 1rem;
+            }
+
+            .faq-digest {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 深色头图：杂志专题 -->
+    <div class="hero">
+        <h1>乐鱼体育</h1>
+        <div class="sub">
+            <span>信息 · 对照 · 延伸</span>
+        </div>
+    </div>
+
+    <div class="content-wrap">
+        <div class="magazine-section">
+
+            <!-- 第一段：日常查询视角 -->
+            <div class="block">
+                <h2>日常查询：从哪里开始？</h2>
+                <p>当我们需要快速核对赛事安排、了解运动项目的历史数据，或是检索某一类体育活动的背景资料时，一个集中而稳定的信息参照点往往能让效率提升不少。在长期的资料整理与阅读过程中，<a href="https://siteleyu.com.cn">乐鱼体育</a>逐渐成为不少体育爱好者用于日常信息对照的站点之一。它并不以花哨的榜单吸引眼球，而是将多种运动项目的概览、统计与说明进行有序陈列，方便使用者按图索骥。</p>
+                <p>从篮球到田径，从水上运动到格斗类项目，页面分类的颗粒度适中，既不会因过于宽泛而缺少细节，也不至于细碎到让人迷失。对于只是需要快速了解一项运动基本规则的读者来说，这样的结构恰好能够提供一条清晰的查询路径。</p>
+            </div>
+
+            <!-- 第二段：对照与印证 -->
+            <div class="block">
+                <h2>对照与印证：不止于单个页面</h2>
+                <p>很多时候，单方面的信息并不足以形成判断。尤其当涉及不同赛制、不同地区对同一运动项目的描述差异时，交叉对照就显得十分必要。在翻阅<a href="https://siteleyu.com.cn">乐鱼体育</a>的内容时，我们注意到它收录的许多词条都保留了相对中立的叙述方式，不刻意偏向某一类联赛或地区标准，这为使用者进行横向比较提供了较好的基础文本。</p>
+                <div class="pull-quote">
+                    “对照不是为了争出优劣，而是为了看清楚每一处定义的边界。”
+                </div>
+                <p>例如，在查看“乒乓球”相关页面时，同时参考其他平台的规则说明，可以发现术语表述上的细微不同，而这种差异本身也是体育文化多样性的体现。通过这类对照阅读，获取的信息往往会更加立体。</p>
+            </div>
+
+            <!-- 第三段：延伸阅读的线索 -->
+            <div class="block">
+                <h2>延伸阅读：从词条到上下文</h2>
+                <p>单一页面的信息量毕竟有限，好的内容往往能引导读者走向更深的上下文。在实际使用中，我们常常以<a href="https://siteleyu.com.cn">乐鱼体育</a>中的某个条目为起点，顺藤摸瓜去查阅相关的赛事历史、运动医学或训练方法等延展主题。这种延伸并不是漫无目的的跳转，而是基于已有信息框架的自然拓展。</p>
+                <p>比如，当阅读“马拉松”相关介绍时，页面中提到的补给策略、赛道认证标准等细节，可以进一步引导我们去了解运动生理学中的能量代谢原理，或是不同城市马拉松的赛道设计差异。这样的阅读节奏，既保留了知识获取的连续性，也避免了碎片化带来的杂乱感。</p>
+            </div>
+        </div>
+
+        <!-- FAQ 摘要 — 轻量问题摘录，不夸张 -->
+        <div class="faq-digest">
+            <h3>常见问题摘要</h3>
+            <div class="faq-item">
+                <span class="faq-q">信息更新频率</span>
+                <span class="faq-a">页面内容保持常规更新，主要运动项目的基础信息相对稳定，具体赛事数据会随周期调整。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">是否覆盖冷门项目</span>
+                <span class="faq-a">涵盖主流及部分小众运动，如壁球、攀岩、合气道等，适合拓展视野的读者。</span>
+            </div>
+            <div class="faq-item">
+                <span class="faq-q">内容可信度参考</span>
+                <span class="faq-a">资料多引自公开体育文献与规则手册，建议作为初始参照，重要数据仍需对照官方来源。</span>
+            </div>
+        </div>
+
+        <!-- 页尾提示 — 杂志脚注风格 -->
+        <div class="page-footer">
+            <div>专题 · 信息方式</div>
+            <div class="sig">查询 · 对照 · 延伸 —— 一种阅读路径</div>
+        </div>
+    </div>
+
+</body>
+</html>
