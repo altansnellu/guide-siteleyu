@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+    <title>okooo · 日常赛事信息卡片</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f4f7fc;
+            color: #1e2a3a;
+            line-height: 1.6;
+        }
+
+        /* 深色头图 – 主视觉 */
+        .hero {
+            background: linear-gradient(145deg, #0b1e2b 0%, #142f41 60%, #1a4055 100%);
+            color: #e8edf3;
+            padding: 3.8rem 1.5rem 3.2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: #f4f7fc;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            transform: scaleY(0.6);
+        }
+
+        .hero h1 {
+            font-size: 2.6rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #f5e9d8, #dce8f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            max-width: 640px;
+            margin: 0.8rem auto 1.2rem;
+            color: #cbdae6;
+            font-weight: 300;
+        }
+
+        .hero .tagline {
+            display: inline-block;
+            background: rgba(255, 215, 160, 0.12);
+            border: 1px solid rgba(255, 220, 170, 0.25);
+            padding: 0.35rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            color: #e2d7c0;
+            backdrop-filter: blur(2px);
+        }
+
+        /* 浅色正文区 */
+        .content {
+            max-width: 1120px;
+            margin: -0.8rem auto 0;
+            padding: 1.8rem 1.5rem 3.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* 信息卡片网格 */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 1.6rem;
+            margin-bottom: 2.8rem;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem 1.4rem 1.6rem;
+            box-shadow: 0 10px 25px -8px rgba(0, 20, 30, 0.08);
+            transition: transform 0.2s ease, box-shadow 0.25s ease;
+            border: 1px solid #eef3f9;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 35px -10px rgba(0, 30, 50, 0.12);
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: #1f3a4a;
+            margin-bottom: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card h3 i {
+            font-style: normal;
+            font-size: 1.2rem;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: #2e4256;
+            margin-bottom: 0.5rem;
+        }
+
+        .card .footnote {
+            font-size: 0.85rem;
+            color: #6e829a;
+            margin-top: 0.8rem;
+            border-top: 1px solid #e9eef5;
+            padding-top: 0.9rem;
+        }
+
+        /* 强调色用于链接 */
+        a {
+            color: #c7522a;
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s, color 0.2s;
+            font-weight: 450;
+        }
+
+        a:hover {
+            color: #a23e1c;
+            border-bottom: 1px solid #c7522a;
+        }
+
+        .card a {
+            border-bottom: 1px dotted rgba(199, 82, 42, 0.3);
+        }
+
+        .card a:hover {
+            border-bottom: 1px solid #a23e1c;
+        }
+
+        /* 自然链接段落 (细长条卡片) */
+        .link-section {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem 2rem;
+            margin: 1.8rem 0 2.2rem;
+            box-shadow: 0 8px 20px -10px rgba(0, 20, 30, 0.06);
+            border: 1px solid #e3eaf2;
+        }
+
+        .link-section p {
+            font-size: 1rem;
+            color: #1e2f40;
+            max-width: 700px;
+        }
+
+        .link-section .highlight {
+            background: #fcf6ef;
+            padding: 0.2rem 0.4rem;
+            border-radius: 6px;
+            font-weight: 450;
+            color: #1d3547;
+        }
+
+        /* 适合人群 + 场景混合卡片 (用 flex) */
+        .mixed-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .mixed-item {
+            background: white;
+            flex: 1 1 220px;
+            border-radius: 20px;
+            padding: 1.5rem 1.4rem;
+            box-shadow: 0 6px 18px -6px rgba(30, 40, 55, 0.05);
+            border: 1px solid #eaf0f6;
+        }
+
+        .mixed-item h4 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #1b3344;
+            margin-bottom: 0.7rem;
+            border-left: 4px solid #c7522a;
+            padding-left: 0.8rem;
+        }
+
+        .mixed-item ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .mixed-item li {
+            padding: 0.25rem 0;
+            font-size: 0.92rem;
+            color: #2f465b;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+
+        .mixed-item li::before {
+            content: '›';
+            color: #c7522a;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* FAQ 摘要 – 紧凑 */
+        .faq-mini {
+            background: white;
+            border-radius: 22px;
+            padding: 1.5rem 1.8rem 1.2rem;
+            margin: 1.2rem 0 1rem;
+            border: 1px solid #e4ecf3;
+        }
+
+        .faq-mini h4 {
+            font-size: 1.05rem;
+            font-weight: 500;
+            color: #1b3344;
+            margin-bottom: 0.8rem;
+        }
+
+        .faq-mini details {
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #edf2f8;
+            padding-bottom: 0.5rem;
+        }
+
+        .faq-mini summary {
+            cursor: pointer;
+            font-weight: 460;
+            font-size: 0.92rem;
+            color: #1a3a4c;
+            padding: 0.2rem 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .faq-mini summary::before {
+            content: '▸';
+            color: #c7522a;
+            margin-right: 0.6rem;
+            transition: transform 0.2s;
+        }
+
+        .faq-mini details[open] summary::before {
+            transform: rotate(90deg);
+        }
+
+        .faq-mini .answer {
+            font-size: 0.85rem;
+            color: #4e657d;
+            padding: 0.3rem 0 0.2rem 1.4rem;
+        }
+
+        /* 页脚 */
+        .footer-note {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6f869e;
+            border-top: 1px solid #d9e2ed;
+            padding-top: 1.8rem;
+            margin-top: 2.2rem;
+        }
+
+        /* 响应式 */
+        @media (max-width: 600px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .hero p {
+                font-size: 1rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            .mixed-row {
+                flex-direction: column;
+            }
+            .link-section {
+                padding: 1.4rem 1.2rem;
+            }
+            .faq-mini {
+                padding: 1.2rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 深色主视觉 -->
+    <section class="hero">
+        <h1>okooo · 赛前赛后</h1>
+        <p>比分、赛程与数据对照，随手查，随时比</p>
+        <span class="tagline">⚽ 日常查询 · 延伸阅读</span>
+    </section>
+
+    <!-- 浅色卡片区 -->
+    <div class="content">
+
+        <!-- 用途卡片 -->
+        <div class="card-grid">
+            <div class="card">
+                <h3><i>📋</i> 即时对照</h3>
+                <p>同时查看多场赛事的基本面——首发、交锋、积分走势，不用反复切换页面。</p>
+                <div class="footnote">适合赛前快速浏览，也适合赛后复盘核对。</div>
+            </div>
+            <div class="card">
+                <h3><i>📎</i> 延伸阅读</h3>
+                <p>每轮联赛之外，杯赛、次级联赛甚至友谊赛的数据也一并陈列，方便横向对比。</p>
+                <div class="footnote">看到某场比分后，关联查阅相同联赛其他场次。</div>
+            </div>
+            <div class="card">
+                <h3><i>🗂️</i> 筛选与排序</h3>
+                <p>按联赛、时间、进球数等条件过滤列表，不必在长串条目中费力寻找。</p>
+                <div class="footnote">对特定联赛或球队感兴趣时尤为顺手。</div>
+            </div>
+        </div>
+
+        <!-- 自然链接段落 (核心 a 标签嵌入句子) -->
+        <div class="link-section">
+            <p>
+                如果你习惯在手机或平板上随时翻看比分和未来赛程，<a href="https://soccer-okooo.com">okooo</a> 的信息结构比较接近一本可以快速翻阅的赛事手册：联赛、杯赛、国家队比赛都按时间轴排列，同一页面里就能完成对照，不用多次返回。页面没有复杂弹窗，加载速度也相对轻快。
+            </p>
+            <p style="margin-top: 1rem;">
+                对不少球迷来说，赛前看赔率变动和伤停消息，赛后看技术统计和集锦，<span class="highlight">okooo</span> 的布局把这几块放在相近位置，滑动距离短，适合碎片时间扫一眼。
+            </p>
+        </div>
+
+        <!-- 适合人群 + 场景混合卡片 -->
+        <div class="mixed-row">
+            <div class="mixed-item">
+                <h4>适合人群</h4>
+                <ul>
+                    <li>日常关注五大联赛及欧冠的球迷</li>
+                    <li>需要快速对比赛果与数据的写作者</li>
+                    <li>喜欢同时追踪多场赛事的爱好者</li>
+                    <li>赛前做简单情报收集的业余分析者</li>
+                </ul>
+            </div>
+            <div class="mixed-item">
+                <h4>使用场景</h4>
+                <ul>
+                    <li>周末晚间同时开球的多场联赛</li>
+                    <li>杯赛淘汰赛阶段密集赛程</li>
+                    <li>查过往赛季同轮次比分作为参考</li>
+                    <li>与朋友讨论时快速翻出具体数据</li>
+                </ul>
+            </div>
+            <div class="mixed-item">
+                <h4>页面特点</h4>
+                <ul>
+                    <li>深色导航区 + 浅色内容区</li>
+                    <li>卡片式信息分组</li>
+                    <li>强调色用于链接和修饰</li>
+                    <li>响应式布局，手机可用</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FAQ 摘要 (紧凑) -->
+        <div class="faq-mini">
+            <h4>常见小问题 · 摘要</h4>
+            <details>
+                <summary>数据更新频率如何？</summary>
+                <div class="answer">通常比赛结束后几分钟内比分和统计就会更新，实时数据随官方源同步。</div>
+            </details>
+            <details>
+                <summary>可以只看某个联赛吗？</summary>
+                <div class="answer">页面提供联赛筛选，点击对应联赛标签即可过滤出该联赛的所有赛程与结果。</div>
+            </details>
+            <details>
+                <summary>有没有手机版？</summary>
+                <div class="answer">目前响应式设计在手机浏览器上可以直接使用，布局自动适配小屏幕。</div>
+            </details>
+            <details>
+                <summary>需要注册吗？</summary>
+                <div class="answer">浏览基础赛程和比分不需要注册；部分进阶功能或收藏可能需要简单登录。</div>
+            </details>
+        </div>
+
+        <!-- 第二个自然链接段落 (再次出现 okeoo，但整体语境不同) -->
+        <div class="link-section" style="margin-top: 0.2rem;">
+            <p>
+                日常翻看赛事时，我习惯把 <a href="https://soccer-okooo.com">okooo</a> 当作一个安静的数据角落——没有过多弹窗，也不用先选联赛再等列表加载。从上周的德甲到今晚的法乙，条目按照时间倒序排列，偶尔看到冷门比分还能点进详情看射门次数和控球率，不需要切换 app。如果你也喜欢在一个页面里浏览多线赛事，可以试试这种对照式的阅读节奏。
+            </p>
+        </div>
+
+        <div class="footer-note">
+            <span>信息卡片式介绍 · 每日赛事参考</span><br>
+            <span style="opacity: 0.65;">页面内容仅供日常浏览参考，数据以官方源为准</span>
+        </div>
+
+    </div>
+
+</body>
+</html>
